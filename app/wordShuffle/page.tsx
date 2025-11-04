@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 
 export default function WordShuffle() {
@@ -9,7 +10,9 @@ export default function WordShuffle() {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => setOriginalText(ev.target?.result as string);
+    reader.onload = (event) => {
+      setOriginalText(event.target?.result as string);
+    };
     reader.readAsText(file, 'UTF-8');
   };
 
@@ -26,7 +29,9 @@ export default function WordShuffle() {
   const processText = () => {
     const result = originalText
       .split('\n')
-      .map((line) => line.replace(/(\p{L}+)/gu, (m) => shuffleWord(m)))
+      .map((line) =>
+        line.replace(/(\p{L}+)/gu, (match) => shuffleWord(match))
+      )
       .join('\n');
     setProcessedText(result);
   };
@@ -40,40 +45,80 @@ export default function WordShuffle() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(url);
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-6">
-      <div className="bg-white/5 rounded-2xl shadow p-8 w-full max-w-3xl">
-        <h1 className="text-2xl font-bold text-center mb-4">Zadanie 1 — Losowe przestawianie liter</h1>
-        <p className="text-center mb-4">Wgraj plik .txt, aplikacja przetasuje litery w środku wyrazów (pierwsza i ostatnia litera zachowana).</p>
+    <main className="min-h-screen  flex items-center justify-center p-6">
+      <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full max-w-3xl text-white">
+        <h1 className="text-3xl font-bold mb-4">
+          1.
+        </h1>
+        <p className="text-center mb-6 opacity-90">
+          PLIK .TXT, MIESZANIE LITER W ŚRODKU
+        </p>
 
         <div className="flex flex-col items-center gap-4 mb-6">
-          <input type="file" accept=".txt" onChange={handleFileUpload}
-            className="file:bg-white file:text-black file:px-4 file:py-2 file:rounded-full cursor-pointer" />
+          <input
+            type="file"
+            accept=".txt"
+            onChange={handleFileUpload}
+            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold
+                       file:bg-linear-to-r file:from-blue-400 file:to-purple-500 file:text-white
+                       hover:file:opacity-90 cursor-pointer"
+          />
 
-          <div className="flex gap-3">
-            <button onClick={processText} disabled={!originalText}
-              className={`px-5 py-2 rounded-full font-semibold ${originalText ? 'bg-linear-to-r from-slate-700 to-slate-900 text-white hover:scale-105' : 'bg-gray-400 text-white cursor-not-allowed'}`}>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button
+              onClick={processText}
+              disabled={!originalText}
+              className={`px-6 py-2 rounded-full font-semibold text-white transition-transform duration-200 
+                ${
+                  originalText
+                    ? 'bg-linear-to-r from-orange-400 to-pink-500 hover:scale-105'
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
+            >
               Przetwórz tekst
             </button>
 
-            <button onClick={downloadProcessedFile} disabled={!processedText}
-              className={`px-5 py-2 rounded-full font-semibold ${processedText ? 'bg-linear-to-r from-slate-700 to-slate-900 text-white hover:scale-105' : 'bg-gray-400 text-white cursor-not-allowed'}`}>
+            <button
+              onClick={downloadProcessedFile}
+              disabled={!processedText}
+              className={`px-6 py-2 rounded-full font-semibold text-white transition-transform duration-200 
+                ${
+                  processedText
+                    ? 'className="px-3 py-1 bg-linear-to-r from-pink-500 to-orange-400  rounded-full transition-transform" hover:scale-105'
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
+            >
               Pobierz wynik
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-6">
           <div>
-            <h3 className="mb-2 font-semibold">Oryginał</h3>
-            <textarea readOnly value={originalText} rows={10} className="w-full p-3 rounded bg-white/5 text-white resize-none font-mono" />
+            <h3 className="text-xl font-semibold mb-2">
+              Oryginał:
+            </h3>
+            <textarea
+              rows={8}
+              value={originalText}
+              readOnly
+              className="w-full rounded-lg p-3 bg-white/20 text-white border border-white/30 resize-none font-mono"
+            />
           </div>
+
           <div>
-            <h3 className="mb-2 font-semibold">Wynik</h3>
-            <textarea readOnly value={processedText} rows={10} className="w-full p-3 rounded bg-white/5 text-white resize-none font-mono" />
+            <h3 className="text-xl font-semibold mb-2"> 
+              Wynik:
+            </h3>
+            <textarea
+              rows={8}
+              value={processedText}
+              readOnly
+              className="w-full rounded-lg p-3 bg-white/20 text-white border border-white/30 resize-none font-mono"
+            />
           </div>
         </div>
       </div>

@@ -44,7 +44,7 @@ export default function WordShuffle() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'przetworzony_tekst.txt';
+    link.download = 'TekstPoPrzetworzeniu.txt';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -60,7 +60,7 @@ export default function WordShuffle() {
 
         {/* Input pliku */}
         <div className="flex flex-col items-center gap-4 w-full">
-          <label className=" bg-linear-to-r from-blue-400 to-purple-500 flex flex-col items-center rounded-full px-5 py-1 cursor-pointer hover:">
+          <label className=" bg-linear-to-r from-orange-400 to-pink-500 flex flex-col items-center rounded-full px-5 py-1 cursor-pointer hover:">
             <span className="mb-1 text-white  font-extrabold">Wybierz plik</span>
             <input
               type="file"
@@ -80,7 +80,7 @@ export default function WordShuffle() {
               className={`px-6 py-2 rounded-full font-semibold text-white transition-transform duration-200
                 ${
                   originalText
-                    ? 'bg-linear-to-r from-orange-400 to-pink-500 hover:scale-105'
+                    ? 'bg-linear-to-r from-orange-600 to-pink-600 hover:scale-105'
                     : 'bg-gray-400 cursor-not-allowed'
                 }`}
             >

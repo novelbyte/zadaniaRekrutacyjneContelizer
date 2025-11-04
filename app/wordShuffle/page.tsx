@@ -5,10 +5,13 @@ import { useState } from 'react';
 export default function WordShuffle() {
   const [originalText, setOriginalText] = useState('');
   const [processedText, setProcessedText] = useState('');
+  const [fileName, setFileName] = useState('');
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setFileName(file.name);
+
     const reader = new FileReader();
     reader.onload = (event) => {
       setOriginalText(event.target?.result as string);
@@ -48,30 +51,33 @@ export default function WordShuffle() {
   };
 
   return (
-    <main className="min-h-screen  flex items-center justify-center p-6">
-      <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full max-w-3xl text-white">
-        <h1 className="text-3xl font-bold mb-4">
-          1.
-        </h1>
+    <main className="min-h-screen flex items-center justify-center p-6">
+      <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-3xl text-white">
+        <h1 className="text-3xl font-bold mb-4 text-center">1.</h1>
         <p className="text-center mb-6 opacity-90">
           PLIK .TXT, MIESZANIE LITER W ŚRODKU
         </p>
 
-        <div className="flex flex-col items-center gap-4 mb-6">
-          <input
-            type="file"
-            accept=".txt"
-            onChange={handleFileUpload}
-            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold
-                       file:bg-linear-to-r file:from-blue-400 file:to-purple-500 file:text-white
-                       hover:file:opacity-90 cursor-pointer"
-          />
+        {/* Input pliku */}
+        <div className="flex flex-col items-center gap-4 w-full">
+          <label className=" bg-linear-to-r from-blue-400 to-purple-500 flex flex-col items-center rounded-full px-5 py-1 cursor-pointer hover:">
+            <span className="mb-1 text-white  font-extrabold">Wybierz plik</span>
+            <input
+              type="file"
+              accept=".txt"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <span className="text-sm text-white/90">
+              {fileName || 'Nie wybrano pliku'}
+            </span>
+          </label>
 
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 w-full">
             <button
               onClick={processText}
               disabled={!originalText}
-              className={`px-6 py-2 rounded-full font-semibold text-white transition-transform duration-200 
+              className={`px-6 py-2 rounded-full font-semibold text-white transition-transform duration-200
                 ${
                   originalText
                     ? 'bg-linear-to-r from-orange-400 to-pink-500 hover:scale-105'
@@ -84,10 +90,10 @@ export default function WordShuffle() {
             <button
               onClick={downloadProcessedFile}
               disabled={!processedText}
-              className={`px-6 py-2 rounded-full font-semibold text-white transition-transform duration-200 
+              className={`px-6 py-2 rounded-full font-semibold text-white transition-transform duration-200
                 ${
                   processedText
-                    ? 'className="px-3 py-1 bg-linear-to-r from-pink-500 to-orange-400  rounded-full transition-transform" hover:scale-105'
+                    ? 'bg-linear-to-r from-pink-500 to-orange-400 hover:scale-105'
                     : 'bg-gray-400 cursor-not-allowed'
                 }`}
             >
@@ -96,11 +102,10 @@ export default function WordShuffle() {
           </div>
         </div>
 
+        {/* Teksty */}
         <div className="space-y-6">
           <div>
-            <h3 className="text-xl font-semibold mb-2">
-              Oryginał:
-            </h3>
+            <h3 className="text-xl font-semibold mb-2">Oryginał:</h3>
             <textarea
               rows={8}
               value={originalText}
@@ -110,9 +115,7 @@ export default function WordShuffle() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-2"> 
-              Wynik:
-            </h3>
+            <h3 className="text-xl font-semibold mb-2">Wynik:</h3>
             <textarea
               rows={8}
               value={processedText}

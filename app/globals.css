@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
+<<<<<<< HEAD
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
+=======
+>>>>>>> b7eb155 (commit test)
 
 @media (prefers-color-scheme: dark) {
   :root {
